@@ -28,6 +28,6 @@ Bản 0.5.4 hoàn thiện native packaging/distribution, giữ nghiệp vụ có
 
 ## Máy không dùng repo
 
-Gửi `DMS-Fast_0.5.4_Native.zip` trực tiếp, đọc START-HERE-HERMES rồi dùng helper plan/consent. Không cần Git/GitHub để copy từ ZIP; thiếu prerequisites vẫn cần nguồn tải chính thức. Hai kênh dùng cùng runtime/skill; legacy `dms-fast` directory đồng nhất bytes với native root và được kiểm tự động.
+Gửi `DMS-Fast_0.5.4_Native-LF.zip` trực tiếp, đọc START-HERE-HERMES rồi dùng helper plan/consent. Không cần Git/GitHub để copy từ ZIP; thiếu prerequisites vẫn cần nguồn tải chính thức. Hai kênh dùng cùng runtime/skill; legacy `dms-fast` directory đồng nhất bytes với native root và được kiểm tự động. `.gitattributes` giữ LF cả khi Git Windows có core.autocrlf=true; kiểm regression bằng Git clone thực, không chỉ chuẩn hoá text để bỏ qua byte mismatch.
 
 Nguồn: official Hermes plugin/catalog docs và installed Electron resolvePluginGitUrl/detectPluginComponents/probePluginRepo + PluginInstallModal. Direct repo review dùng cơ chế native, không patch Hermes core hoặc adapter trình duyệt riêng.

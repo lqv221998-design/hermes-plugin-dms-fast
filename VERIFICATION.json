@@ -1,10 +1,10 @@
 {
   "schema": "dms-native-packaging-verification-v1",
   "version": "0.5.4",
-  "time": "2026-10-13T13:34:55.964418+07:00",
+  "time": "2026-10-13T14:08:01.620709+07:00",
   "scope": "native packaging/repository install; no direct DMS document reading",
   "python_tests": {
-    "passed": 100,
+    "passed": 101,
     "failed": 0,
     "skipped": 0,
     "real_npm_test": true

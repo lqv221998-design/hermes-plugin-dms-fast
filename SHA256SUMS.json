@@ -1,6 +1,7 @@
 {
   "schema": "sha256-file-integrity-v1",
   "files": {
+    ".gitattributes": "d60f352d0db1404c70afb4bb8b2ca3fd1c610572aa40720e8a0b7baa7885418c",
     ".gitignore": "b182c9b3c7f373d4724ed48fe6bf39c9b08e4ff5fcec53936fac3a32cc6ccf16",
     "__init__.py": "dcd63c42c16e96f8683516e9c4455169701eb161d5214c8938ad0127150e10d9",
     "ACCEPTANCE.md": "415f063808dc54e71588610af0e5066c625e1cb33ce288c10272d7c5c6b4f4c4",
@@ -26,7 +27,7 @@
     "files.py": "f1bf663b4c90dda40255870f0651d794c5349ddee164a81ea571c26e192584e9",
     "install.py": "e32fe86f9bb9c2301a27217e2bb215eb866992cea2cd1e01815c4f64236107c5",
     "LICENSE": "c5276dc34d46e79373fdbd3957d1806d1e10b3c4da552d501c2d25aad444612c",
-    "NATIVE-DESKTOP-INSTALL.md": "9654e9cde6017ccb02f212523dfbf41d2a5e5350054bc690077073c7a723927f",
+    "NATIVE-DESKTOP-INSTALL.md": "0861e7030f965328cacfe6dc358b5283c61ce904b2550f47b3ba18e73a981367",
     "paths.py": "2a5febb8094f801aff02f4af540818e5941b4d4d4d5d0d639d435562d7a3ad42",
     "plugin.yaml": "b0aa820c177660abf31c401284ddd9c76fe03db15ad41f2f3df8151c9a86001c",
     "PORTABILITY.md": "c92a7088dcc93529738342149b3da04935ecd564d9a6e45809453553e86296d4",
@@ -49,7 +50,7 @@
     "tests/test_listing_boundary.py": "853b262292321bf33d78db861bf893d9c9217d3880a34ef133cc1a9c2e0a5bf2",
     "tests/test_native_diagnostic.py": "a2d5137ff10502309b5731ca3a58c74e5da0b2076aa61f939b62c95443502b00",
     "tests/test_native_install.mjs": "93b6419f8b281674a8d3496fa5813e2b853d654ecc7e3c66e3aa4acb04d39078",
-    "tests/test_native_repository.py": "95b5a2effb653cc9fe4105febe18626585a2cfe5672bbdc44698188b5b1a3338",
+    "tests/test_native_repository.py": "cdcf15293498cfc84bbd0f541318f45862e4327e040da6d507671fee68a23335",
     "tests/test_operations.py": "20a875391a349d47490b889f841160bc3936378d62d6accb3a80aaa35fdb40db",
     "tests/test_panel.mjs": "0197f029b449a031831d5072874ecca17e238def2c775e452500bcecdef8a981",
     "tests/test_policy.py": "bbb8a069d97e7f762630a91894d82407f3154c5830b7175a78da1b56707149de",
@@ -64,6 +65,6 @@
     "tests/test_status.py": "ed293d2040986b6f22799b9c207d9e8c34df55cd400c02f65cca5e6b233d21de",
     "tests/test_ui_adapter.py": "d00262409fb61dfbd006a57b2d008be33b62bac61fad6e65984930db87175e2e",
     "transfer.py": "d9a1d1503421d5dfea40dfbe8dfb2c4a25dc51f8b95973cc7f2b68848bed6069",
-    "VERIFICATION.json": "ea635982d2dee0aaf4dc2aff35e0f1677fa0db008e49e6c894ae566b10e0724f"
+    "VERIFICATION.json": "94af4416aaa63b567fb576fa6d7cb8b49636010b0a17327b8042af65f0a4d98c"
   }
 }
