@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.env
+.env.*
+config.yaml
+*.private.yaml
+plugin-data/
+browser-profiles/
+browser-connections/
+*.log
+live-receipts.json
+baseline.json
