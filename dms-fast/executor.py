@@ -5,6 +5,7 @@ from pathlib import Path
 from .core import parse_snapshot, validate_url
 from .files import finish
 from .adapter import observe, file_candidates
+from .paths import checked_path
 
 QUOTA = 'Đã quá số lượng tải văn bản trong ngày'
 
@@ -97,10 +98,7 @@ def execute(ctx, task, page_id, text, call, work_id):
         buttons = re.findall(r'uid=(\S+) link "Tải về" url="javascript:;"', detail)
         if len(buttons) != 1:
             return {'status': 'download_ui_changed', 'source': source, 'download_attempted': False}
-        download_dir = Path(ctx.get_config('download_dir', default=''))
-        if not download_dir.is_absolute() or not download_dir.is_dir() or download_dir.is_symlink():
-            raise ValueError('Configured download directory must exist')
-        download_dir = download_dir.resolve()
+        download_dir = checked_path(ctx.get_config('download_dir', default=''), must_exist=True, directory=True)
         before = {p.name: [p.stat().st_size, p.stat().st_mtime_ns] for p in download_dir.iterdir() if p.is_file() and not p.is_symlink()}
         saved = {'server': server, 'source': source, 'task': dict(task), 'before': before, 'started_at': time.time(), 'download_dir': str(download_dir), 'attempted': True}
         # Persist intent BEFORE clicking; uncertain outcomes never auto-click again.

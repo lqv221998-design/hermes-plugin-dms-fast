@@ -7,10 +7,11 @@ from .core import BASE, ROUTES, parse_snapshot, validate_url
 from .executor import execute
 from .adapter import observe, CAPABILITIES, READ_SECTIONS, read_section, READ_MENUS, read_menu
 from .transfer import continue_file
+from .paths import checked_path
 
 KEY = 'session_work'
 TTL = 86400
-VERSION = '0.5.2'
+VERSION = '0.5.4'
 
 
 def pages(text):
@@ -66,9 +67,7 @@ def validate_task(task):
             for key in ('expected_title', 'expected_code', 'output_dir'):
                 if not isinstance(task[key], str) or not task[key].strip() or len(task[key]) > 500:
                     raise ValueError('Invalid selected source/output')
-            output = Path(task['output_dir'])
-            if not output.is_absolute() or not output.is_dir() or output.is_symlink():
-                raise ValueError('Output directory must already exist, absolute and nonsymlink')
+            checked_path(task['output_dir'], must_exist=True, directory=True)
         return dict(task)
     if task.get('kind') == 'read' and set(task) <= {'kind', 'action', 'url', 'expected_code', 'expected_title'}:
         if task.get('action') != 'open':

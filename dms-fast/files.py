@@ -6,6 +6,7 @@ import shutil
 import time
 import zipfile
 from pathlib import Path, PurePosixPath
+from .paths import checked_path
 
 
 def digest(path):
@@ -17,6 +18,7 @@ def digest(path):
 
 
 def inspect_file(path):
+    path = checked_path(path, must_exist=True, directory=False)
     if path.is_symlink() or not path.is_file() or path.stat().st_size == 0:
         raise ValueError('Missing/empty/symlink file')
     if path.stat().st_size > 512 * 1024 * 1024:
@@ -52,7 +54,7 @@ def finish(ctx, key, saved, task, *, wait_seconds=None):
         if digest(p) != result['file']['sha256']:
             raise ValueError('Previously delivered bytes changed')
         return dict(result, reused_local=True)
-    directory = Path(saved['download_dir'])
+    directory = checked_path(saved['download_dir'], must_exist=True, directory=True)
     wait = ctx.get_config('download_wait_seconds', default=2) if wait_seconds is None else wait_seconds
     if type(wait) is not int or not 0 <= wait <= 60:
         raise ValueError('Invalid bounded download wait')
@@ -80,13 +82,16 @@ def finish(ctx, key, saved, task, *, wait_seconds=None):
     if not re.search(r'(?<![A-Za-z0-9])' + re.escape(code) + r'(?![A-Za-z0-9])', source.stem, re.I):
         return {'status': 'file_source_unverified', 'source': saved['source'], 'download_attempted': True,
                 'instruction': 'File name does not bind the selected document code; do not claim source identity.'}
-    output = Path(task['output_dir']).resolve()
+    output = checked_path(task['output_dir'], must_exist=True, directory=True)
     name = re.sub(r'[^A-Za-z0-9_.-]', '_', key + '-' + code + '-R' + saved['source']['revision']) + source.suffix.lower()
     target = output / name
     receipt = output / (name + '.source.json')
     if target.exists() or receipt.exists():
         return {'status': 'destination_conflict', 'source': saved['source'], 'download_attempted': True}
     before_hash = digest(source)
+    checked_path(source, must_exist=True, directory=False)
+    checked_path(target, directory=False)
+    checked_path(receipt, directory=False)
     with source.open('rb') as incoming, target.open('xb') as outgoing:
         shutil.copyfileobj(incoming, outgoing, 1024 * 1024)
     if digest(target) != before_hash or digest(source) != before_hash:

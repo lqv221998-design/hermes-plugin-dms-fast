@@ -1,5 +1,5 @@
 name: dms-fast
-version: 0.5.2
+version: 0.5.4
 description: DMS semantic UI adapter, capability discovery and verified two-stage downloads.
 author: vu.lequang, Hermes Agent
 license: MIT

@@ -5,6 +5,7 @@ from pathlib import Path
 from .core import parse_snapshot, validate_url
 from .adapter import observe
 from .files import finish
+from .paths import checked_path
 
 
 def continue_file(ctx, task, page_id, text, call, work_id, filename):
@@ -32,9 +33,7 @@ def continue_file(ctx, task, page_id, text, call, work_id, filename):
     code_match = re.search(r'(?<![A-Za-z0-9])' + re.escape(task['expected_code']) + r'(?![A-Za-z0-9])', filename, re.I)
     if names != [filename] or len(uids) != 1 or not code_match or task['expected_title'] not in page['headings']:
         return {'status': 'file_selection_unverified', 'download_attempted': True, 'ui_observation': observe(text)}
-    directory = Path(saved['download_dir'])
-    if not directory.is_absolute() or not directory.is_dir() or directory.is_symlink():
-        raise ValueError('Download directory unavailable')
+    directory = checked_path(saved['download_dir'], must_exist=True, directory=True)
     saved['transfer_before'] = {p.name: [p.stat().st_size, p.stat().st_mtime_ns] for p in directory.iterdir() if p.is_file() and not p.is_symlink()}
     saved['file_transfer_attempted'] = True
     saved['selected_file_name'] = filename
