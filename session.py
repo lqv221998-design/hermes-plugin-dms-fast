@@ -11,7 +11,7 @@ from .paths import checked_path
 
 KEY = 'session_work'
 TTL = 86400
-VERSION = '0.5.4'
+VERSION = '0.5.5'
 
 
 def pages(text):

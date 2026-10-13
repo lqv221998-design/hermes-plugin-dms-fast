@@ -129,7 +129,7 @@ def register(ctx):
         return None
 
     ctx.register_hook('pre_tool_call', guard)
-    ctx.register_hook('pre_llm_call', lambda **kw: {'context': 'For DMS website work, load dms-fast:reading and use only dms_fast_session. Start with prepare for the requested canonical read URL or bounded search; site mapping starts with a read of https://dms.newtecons.vn/. inspect observes existing tabs and does not bootstrap Chrome. Follow expired/live pending guidance; never cancel unfamiliar work or reset attempts/quota. Direct dms_fast_read and the configured Chrome MCP server are reserved. Human login and daily quota are normal pending states. Never infer completion from a click.'})
+    ctx.register_hook('pre_llm_call', lambda **kw: {'context': 'For missing DMS dependencies or Chrome MCP configuration, load dms-fast:setup first; plugin installation does not configure MCP or grant browser permission. For DMS website work, load dms-fast:reading and use only dms_fast_session. Start with prepare for the requested canonical read URL or bounded search; site mapping starts with a read of https://dms.newtecons.vn/. inspect observes existing tabs and does not bootstrap Chrome. Follow expired/live pending guidance; never cancel unfamiliar work or reset attempts/quota. Direct dms_fast_read and the configured Chrome MCP server are reserved. Human login and daily quota are normal pending states. Never infer completion from a click.'})
 
     def handler(args, **kwargs):
         return json.dumps({'ok': False, 'status': 'session_required', 'instruction': 'Use dms_fast_session with a bounded task; the reader is internal only.'}, ensure_ascii=False)
@@ -162,3 +162,4 @@ def register(ctx):
 
     ctx.register_command('dms', command, description='DMS Fast read navigation', args_hint='<action> <page-id> [canonical-url]')
     ctx.register_skill('reading', Path(__file__).parent/'skills'/'reading'/'SKILL.md', description='Use when reading DMS. Verify source and coverage.')
+    ctx.register_skill('setup', Path(__file__).parent/'skills'/'setup'/'SKILL.md', description='Use when setting up DMS Chrome MCP. Install with consent.')

@@ -1,5 +1,7 @@
 # Hướng dẫn cho Hermes trên máy người nhận
 
+**MCP/đã cài nhưng chưa dùng:** đọc MCP-CHROME-SETUP.md hoặc nạp dms-fast:setup (từ 0.5.5). Không chạy bootstrap trong Git/installed tree có .git/host metadata vì strict ZIP manifest reject extras; dùng ZIP sạch đã kiểm cho audit/deps/recipe. Đã cài plugin thì bỏ qua bước 4 copy/install, không overwrite/reinstall. Không tự mở tài liệu DMS trong setup.
+
 **0.5.4:** ưu tiên native Desktop Install plugin → Repository → Review repository theo NATIVE-DESKTOP-INSTALL.md. Repo-root có Agent + Desktop half + bundled skill; legacy dms-fast giữ tương thích ZIP/fragment. Không đọc tài liệu DMS trong lần release này; bước 7 chỉ thực hiện khi recipient chủ động yêu cầu sau này, không tự chạy như bước cài.
 
 ## 0. Hợp đồng và thứ tự
@@ -61,7 +63,7 @@ Nếu prefix đã có nhưng incomplete/hash khác/ownership receipt thiếu: gi
 
 Thêm `--include-panel` chỉ khi có Desktop SDK và người nhận muốn pane. Backend + skill là đủ cho CLI. Bộ cài kiểm ancestors symlink/junction/reparse, không overwrite, đối chiếu bytes sau copy. Không auto enable/config/trust/browser. `install.py --home <HOME>` riêng là plan; `--apply` mới copy (mặc định kèm pane, `--without-panel` bỏ pane).
 
-Trong cùng scope CLI, chạy `hermes plugins doctor dms-fast --ci`; validator `hermes plugins validate dms-fast --json` và tests từ gói. Bất kỳ failure phải xử lý trước enable. Không bỏ qua Doctor bằng đổi API/controller khác.
+Trong cùng scope CLI, chạy `hermes plugins doctor dms-fast --ci`; validator `hermes plugins validate <INSTALLED_PLUGIN_DIR> --json` dùng installed directory path và tests từ gói. Bất kỳ failure phải xử lý trước enable. Không bỏ qua Doctor bằng đổi API/controller khác.
 
 ## 5. Tạo recipe, cấp quyền/config có kiểm read-back
 

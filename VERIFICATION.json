@@ -1,10 +1,10 @@
 {
   "schema": "dms-native-packaging-verification-v1",
-  "version": "0.5.4",
-  "time": "2026-10-13T14:08:01.620709+07:00",
-  "scope": "native packaging/repository install; no direct DMS document reading",
+  "version": "0.5.5",
+  "time": "2026-10-13T15:04:23.382804+07:00",
+  "scope": "recipient Chrome MCP setup guide and registered onboarding skill; no DMS executor reads",
   "python_tests": {
-    "passed": 101,
+    "passed": 103,
     "failed": 0,
     "skipped": 0,
     "real_npm_test": true
@@ -51,7 +51,8 @@
     "actual Desktop remote review/install",
     "physical recipient/OS acceptance",
     "business DMS acceptance",
-    "independent audit"
+    "independent audit",
+    "native Agent LF publish/rename WinError 5 in prior managed scratch fixtures remains undiagnosed"
   ],
   "legacy_runtime_mirror": "byte-identical, regression tested"
 }

@@ -1,4 +1,6 @@
-# DMS Fast 0.5.4 — cài trực tiếp trong Hermes Desktop từ GitHub
+# DMS Fast 0.5.5 — Chrome MCP onboarding cho máy nhận
+
+**Đã cài plugin nhưng chưa dùng được:** nạp **dms-fast:setup**, đọc [MCP-CHROME-SETUP.md](MCP-CHROME-SETUP.md). MCP Google chính thức ở [ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp); helper tải npm **chrome-devtools-mcp@1.10.1** có consent, không vendor binary/node_modules hay profile tác giả. Native install plugin không tự cài Node/Chrome/MCP/config/allowlist. Skill setup mới được register cùng reading; runtime mới cần cập nhật/nạp đúng profile theo consent, bản cũ vẫn đọc guide và dùng helper từ ZIP sạch.
 
 **Cách cài chính:** mở Install plugin trong Hermes Desktop, nhập `https://github.com/lqv221998-design/hermes-plugin-dms-fast`, chọn **Review repository** rồi kiểm Agent `dms-fast`, Desktop half và profile/commit trước khi cài. Xem [NATIVE-DESKTOP-INSTALL.md](NATIVE-DESKTOP-INSTALL.md). Repo-root có manifest, entry Python, `skills/reading` và `desktop/plugin.js`; không cần fragment cho cách cài mới. Native review/consent do Hermes sở hữu, không có auto-installer tự grant quyền.
 
