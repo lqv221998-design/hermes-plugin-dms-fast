@@ -1,7 +1,7 @@
 ---
 name: reading
 description: "Use when operating DMS. Verify source, quota and files."
-version: 0.5.2
+version: 0.5.4
 author: vu.lequang, Hermes Agent
 license: MIT
 platforms: [windows, linux, macos]
