@@ -54,7 +54,7 @@ function Panel() {
 }
 
 export default {
-  id:'dms-fast-panel', name:'DMS Fast 0.5.5 — Chrome MCP setup skill included',
+  id:'dms-fast-panel', name:'DMS Fast 0.5.6 — DMS and generic web MCP setup',
   register(ctx) {
     ctx.register({id:'reader',area:'panes',title:'DMS Fast',data:{placement:'right',width:'310px'},render:()=>jsx(Panel,{})});
   }
