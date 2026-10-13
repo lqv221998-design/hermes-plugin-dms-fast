@@ -1,7 +1,7 @@
 ---
 name: reading
 description: "Use when operating DMS. Verify source, quota and files."
-version: 0.5.4
+version: 0.5.5
 author: vu.lequang, Hermes Agent
 license: MIT
 platforms: [windows, linux, macos]
@@ -16,6 +16,7 @@ metadata:
 Tra cứu quy định/biểu mẫu trên DMS Newtecons, đọc metadata và tải tối đa một tài liệu cụ thể chỉ khi được phép. Không sửa/duyệt/xoá nguồn hoặc thu thập toàn thư viện.
 
 ## Prerequisites
+- Plugin đã cài nhưng thiếu Node/Chrome/MCP/config/allowlist: nạp `dms-fast:setup` để kiểm và hướng dẫn cài đúng trên máy recipient sau consent; không suy cài code là dùng được. Không dùng raw browser để lách thiếu điều kiện; không cài lại plugin đã thành công. Skill setup đi kèm từ 0.5.5; bản cũ đọc MCP-CHROME-SETUP.md trên repo/ZIP sạch.
 - Native Hermes Chrome DevTools MCP của chính máy/profile đã hoạt động; tên server lấy từ `plugins.entries.dms-fast.settings.mcp_server` (mặc định `chrome_dms`). Không cần giống tên server máy khác; giữ kết nối hiện có, không mở client/browser thứ hai.
 - `dms-fast` đã enable; operator cấp `plugins.entries.dms-fast.mcp_allowlist` riêng cho đúng server khi họ chủ động chấp thuận. Cấu hình server không tự cấp quyền. Quyền plugin gọi server khác quyền thực hiện từng MCP call.
 - Người hỏi tự đăng nhập Chrome riêng. Không copy phiên, cookie, storage, password hoặc OTP. Không restart MCP launched chỉ để đổi bộ tools: có thể đóng Chrome.
