@@ -1,0 +1,15 @@
+{
+  "schema": "hermes-dms-recipient-setup-v1",
+  "bundle_version": "0.5.4",
+  "plugin_version": "0.5.4",
+  "status": "pilot-not-second-machine-certified",
+  "python_runtime": {"supported": "3.14.x", "observed": "3.14.7", "owner": "Hermes installation launcher / PM; never raw pip/uv into its runtime"},
+  "hermes": {"minimum_numeric_version": null, "required_plugin_context_methods": ["call_mcp", "get_config", "register_tool", "register_hook", "register_command", "register_skill"], "required_cli": ["plugins doctor", "plugins enable", "config set", "config get"], "required_python_imports": ["hermes_cli.plugins", "mcp", "pm"], "note": "Capability check + Doctor, not an invented version threshold"},
+  "node": {"google_engine": "^20.19.0 || ^22.12.0 || >=23", "bundle_policy": "22 >=22.12, 24 or 26; reject 20 and 25", "recommended": "24 LTS", "observed_pm": "26.7.0", "note": "26 is tested engine-compatible, not a claim that it is the Google-recommended LTS"},
+  "chrome": {"vendor_supported": ["Google Chrome", "Chrome for Testing"], "recommended": "current stable / extended stable", "observed_pm": "145.0.7632.6", "autoConnect_minimum": "144", "bundle_default": "separate visible persistent recipient profile; no fixed debugging port; no author profile"},
+  "mcp": {"name": "chrome-devtools-mcp", "version": "1.10.1", "tarball": "https://registry.npmjs.org/chrome-devtools-mcp/-/chrome-devtools-mcp-1.10.1.tgz", "integrity": "sha512-Klw6HWDqHC/XS1JwZldd2r49aUhbUJN9m9Mvcx4SEueIPXtzuQX+QelxAViobv8YUkDZ7HWDrmViR6LeYK0wAw==", "lifecycle_scripts": false, "trust": "untrusted", "sampling": false, "elicitation": false},
+  "offline": {"plugin_skill_docs_tests": true, "missing_binaries_install": false, "internet_required_when_missing": true, "github_account_or_git_required_for_this_zip": false},
+  "network": ["official Hermes download/PM artifact origins", "registry.npmjs.org", "dms.newtecons.vn", "recipient company-approved SSO/LLM endpoints"],
+  "human_gates": ["target OS user/profile confirmation", "dependency installation consent", "plugin installation/enable consent", "connector/config/allowlist consent", "browser connection/launch consent", "own DMS SSO/2FA and backend ACL", "company LLM/history/data-retention policy"],
+  "sources": ["https://hermes-agent.nousresearch.com/docs/getting-started/installation", "https://hermes-agent.nousresearch.com/docs/reference/package-management", "https://hermes-agent.nousresearch.com/docs/reference/mcp-config-reference", "https://hermes-agent.nousresearch.com/docs/getting-started/platform-support", "https://registry.npmjs.org/chrome-devtools-mcp/1.10.1", "https://github.com/ChromeDevTools/chrome-devtools-mcp", "https://nodejs.org/en/about/previous-releases"]
+}

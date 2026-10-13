@@ -1,0 +1,28 @@
+name: dms-fast
+version: 0.5.4
+description: DMS semantic UI adapter, capability discovery and verified two-stage downloads.
+author: vu.lequang, Hermes Agent
+license: MIT
+provides_tools:
+  - dms_fast_session
+  - dms_fast_read
+provides_hooks:
+  - pre_tool_call
+  - pre_llm_call
+python_dependencies: []
+capabilities: []
+config_schema:
+  mcp_server:
+    type: str
+    default: chrome_dms
+    label: Chrome MCP server
+    description: Exact native MCP server key in this profile; requires a separate operator allowlist grant.
+  download_dir:
+    type: str
+    label: Browser download directory
+    description: Explicit absolute existing Chrome download directory for this machine/profile. Required for downloads; no guessed Downloads or developer path.
+  download_wait_seconds:
+    type: int
+    default: 2
+    label: Completed-file wait
+    description: Bounded 0–60 seconds; timeout never retries the download click.

@@ -1,22 +1,36 @@
-# Hermes Plugin — DMS Fast 0.5.2
+# DMS Fast 0.5.4 — cài trực tiếp trong Hermes Desktop từ GitHub
+
+**Cách cài chính:** mở Install plugin trong Hermes Desktop, nhập `https://github.com/lqv221998-design/hermes-plugin-dms-fast`, chọn **Review repository** rồi kiểm Agent `dms-fast`, Desktop half và profile/commit trước khi cài. Xem [NATIVE-DESKTOP-INSTALL.md](NATIVE-DESKTOP-INSTALL.md). Repo-root có manifest, entry Python, `skills/reading` và `desktop/plugin.js`; không cần fragment cho cách cài mới. Native review/consent do Hermes sở hữu, không có auto-installer tự grant quyền.
+
+Phiên bản này hoàn thiện **đóng gói/phân phối native**, không tuyên bố hoàn thiện mọi chức năng DMS. Không đọc tài liệu trên DMS trong lần phát hành này. Toàn văn/OCR, pagination và advanced filter vẫn chưa triển khai/nghiệm thu. Login/ACL/Chrome/MCP/LLM policy của người nhận là cổng riêng.
+
+**Bắt đầu bằng [START-HERE-HERMES.md](START-HERE-HERMES.md), [requirements.json](requirements.json), [SAFETY-AND-LIMITS.md](SAFETY-AND-LIMITS.md).** ZIP này không cần GitHub/Git để cài plugin. Có kiểm môi trường, cài dependencies thiếu sau consent, backend/skill/routes và pane tùy chọn. Không mang tài khoản, config, trust hoặc Chrome profile tác giả.
+
+`bootstrap.py audit --home <HOME>` mặc định chỉ kiểm; `deps --approve-dependencies` mới cài thiếu; `install --approve-install` mới copy; `recipe` chỉ xuất dữ liệu cấu hình cho agent xin quyền/apply qua native CLI và read-back. Interpreter phải là runtime Hermes Python 3.14.x, không đoán từ system Python. MCP pin 1.10.1; Node/CfT theo PM bản Hermes hoặc thành phần phù hợp đã kiểm. Có manifest SHA256, tests và acceptance riêng.
+
+**Không phải bộ cài hoàn toàn offline:** thiếu binaries/MCP cần internet và quyền tải nguồn chính thức. Chưa có/hỏng Hermes/Python thì dùng installer/package chính thức của Hermes; không chạy Python để bootstrap chính Python hoặc raw pip/uv vào runtime. Cài xong chưa chứng minh dùng DMS được: phải qua consent, native-chat/Chrome/login/ACL/LLM policy tại máy nhận.
+
+Gói giữ nhãn pilot: Windows x64 được kiểm, chưa nghiệm thu máy vật lý thứ hai/macOS/Linux. `VERIFICATION.json`/`ACCEPTANCE.md` là bằng chứng của phiên bản này.
 
 Plugin và bundled skill cho DMS Newtecons. Mỗi người dùng dùng Chrome, tài khoản DMS và quyền backend của chính họ. Không có thông tin đăng nhập, cấu hình máy phát triển hoặc phiên Chrome trong repository.
 
-## Cài từ GitHub
+## Git-native hoặc ZIP
 
-Repository private: người nhận phải được cấp quyền đọc GitHub và Git HTTPS/SSH trên máy đó đã xác thực. Phiên đăng nhập GitHub trong Chrome không tự xác thực Git CLI. Không dán token vào chat hoặc URL Git.
+Release v0.5.4 cung cấp gói ZIP riêng. Chọn native Desktop để cài từ URL, hoặc gửi ZIP và theo START-HERE-HERMES cho máy không muốn dùng Git/GitHub. Subdirectory `dms-fast` được giữ tương thích lệnh cũ và đồng nhất bytes với runtime ở root.
+
+Repository được phân phối public theo quyền của tác giả: tải source không cần GitHub sign-in. Native Desktop vẫn cần Git khả dụng. Nếu dùng fork private, người nhận phải tự có quyền Git; Chrome login không xác thực Git CLI. Không dán token vào chat/URL.
 
 Chọn đúng profile Hermes trước khi chạy (dùng `hermes -p <profile-name>` nếu không phải Default).
 
 ```bash
-hermes plugins install 'https://github.com/lqv221998-design/hermes-plugin-dms-fast.git#dms-fast' --no-enable
+hermes plugins install 'https://github.com/lqv221998-design/hermes-plugin-dms-fast.git' --no-enable
 hermes plugins doctor dms-fast --ci
 hermes plugins enable dms-fast --no-allow-tool-override
 ```
 
 Để triển khai bất biến, thêm `--ref <COMMIT_SHA_40_KY_TU>` vào lệnh install. Lấy SHA đầy đủ từ commit đã duyệt; không thay bằng tên nhánh/tag hoặc SHA rút gọn. Không dùng `--force` để ghi đè bản đang hoạt động.
 
-Plugin nằm trong thư mục `dms-fast`, vì vậy fragment `#dms-fast` là bắt buộc với bố cục repository này. Lệnh install plugin không tự cài pane Desktop, Chrome/Node hoặc MCP, không tự cấp quyền hay sao chép cấu hình người phát triển.
+Plugin native ở repo root gồm Agent, skill và Desktop half. Fragment `#dms-fast` chỉ là đường tương thích cũ. Native Desktop có thể cài cả hai half theo lựa chọn của người nhận; CLI và ZIP cần kiểm half theo host riêng. Không coi native install là tự cài Chrome/Node/MCP hoặc tự cấp quyền; dùng setup có consent trong START-HERE.
 
 ## Skill đi kèm
 
@@ -58,7 +72,7 @@ node tests/test_panel.mjs
 hermes plugins doctor ./dms-fast --ci
 ```
 
-87 Python contract tests đã đạt trên Windows tại máy phát triển; fixtures không chứng minh chạy được mọi máy/role. Chưa nghiệm thu máy vật lý thứ hai/macOS/Linux hay toàn DMS. Đọc [ACCEPTANCE.md](ACCEPTANCE.md).
+Kết quả tests 0.5.3 và kiểm cài online được ghi trong VERIFICATION.json; fixtures không chứng minh chạy được mọi máy/role. Chưa nghiệm thu máy vật lý thứ hai/macOS/Linux hay toàn DMS. Đọc [ACCEPTANCE.md](ACCEPTANCE.md).
 
 Pane Desktop là tùy chọn. Bộ cài offline `install.py` dùng profile-home explicit, từ chối ghi đè và không enable/grant. Không chạy bộ cài này để cài lại backend sau khi đã cài bằng Git. Xem [BUNDLE-GUIDE.md](BUNDLE-GUIDE.md), [PORTABILITY.md](PORTABILITY.md) và [SESSION-WORKFLOW.md](SESSION-WORKFLOW.md).
 

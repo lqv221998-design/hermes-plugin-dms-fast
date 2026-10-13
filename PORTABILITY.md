@@ -1,4 +1,8 @@
-# DMS Fast 0.5.2 — hợp đồng cài đặt và nghiệm thu đa máy
+# DMS Fast 0.5.4 — hợp đồng cài đặt và nghiệm thu đa máy
+
+Native repository distribution: root Agent/skills/desktop/plugin.js theo NATIVE-DESKTOP-INSTALL.md, URL bare không cần fragment. Quyền user/ACL/Chrome vẫn riêng; task release không đọc DMS. Legacy mirrored directory được kiểm bằng byte equality.
+
+Bộ Setup: đọc START-HERE-HERMES/requirements/SAFETY-AND-LIMITS trước. Helper tạo recipe dùng Node + MCP entry JS absolute, không phải shell npm.cmd. Đây là Windows pilot, không chứng nhận mọi OS. Path guard từ chối mọi ancestors links/reparse, stricter hơn Hermes core; không tự tháo link.
 
 ## 1. Một gói chung, không sao chép một máy đã đăng nhập
 
@@ -55,7 +59,7 @@ Plugin chỉ dùng public ctx.call_mcp; host trả envelope ok/result/truncated 
 ## 4. Cài và cấu hình recipient
 
 1. Chọn đúng profile-home hiện có, kiểm checksum gói. Chạy tests/Doctor/validator tại máy đó trước enable. Launcher Hermes có thể hoàn tất update đã pending trước một CLI command; kiểm trạng thái host và không coi đây là hành vi của DMS installer.
-2. Chạy python <bundle>/install.py --home <profile-home>, thêm --without-panel nếu không dùng Desktop. Installer không đoán home, đọc secrets, sửa config, enable, cấp quyền hoặc restart. Có bản cũ thì từ chối overwrite trước ghi; backup/migration cần quyết định riêng.
+2. Chạy python <bundle>/install.py --home <profile-home> để PLAN; chỉ thêm --apply sau consent mới copy. Thêm --without-panel nếu không dùng Desktop. Installer không đoán home, đọc secrets, sửa config, enable, cấp quyền hoặc restart. Có bản cũ thì từ chối overwrite trước ghi; backup/migration cần quyết định riêng.
 3. Các supported CLI sau đó phải dùng cùng HERMES_HOME hoặc hermes -p <profile-name>. --home của installer không tự chuyển scope CLI. Enable với --no-allow-tool-override sau phê duyệt.
 4. Đặt plugins.entries.dms-fast.settings.mcp_server là nguyên tên server recipient; mcp_allowlist chỉ cấp riêng sau operator consent và giữ trust/approval.
 5. Đặt plugins.entries.dms-fast.settings.download_dir là absolute existing directory Chrome thật trên host chạy Python. Không có default Downloads; thiếu trả configuration_required trước browser call. download_wait_seconds là integer 0–60, mặc định 2; resume attempt đã click kiểm tệp ngay, không lặp thời gian chờ.

@@ -1,0 +1,57 @@
+{
+  "schema": "dms-native-packaging-verification-v1",
+  "version": "0.5.4",
+  "time": "2026-10-13T13:34:55.964418+07:00",
+  "scope": "native packaging/repository install; no direct DMS document reading",
+  "python_tests": {
+    "passed": 100,
+    "failed": 0,
+    "skipped": 0,
+    "real_npm_test": true
+  },
+  "native_root_detection": {
+    "agent": true,
+    "desktop": true,
+    "agentName": "dms-fast",
+    "desktopName": "desktop",
+    "desktopSourceSubdir": "desktop"
+  },
+  "native_git_probe": {
+    "ok": true,
+    "agent": true,
+    "desktop": true,
+    "agentName": "dms-fast"
+  },
+  "checks": [
+    {
+      "step": "python_full_including_npm",
+      "exit_code": 0
+    },
+    {
+      "step": "panel_fixture",
+      "exit_code": 0
+    },
+    {
+      "step": "actual_native_detector_git_probe",
+      "exit_code": 0
+    },
+    {
+      "step": "native_root_doctor",
+      "exit_code": 0
+    },
+    {
+      "step": "native_root_validate",
+      "exit_code": 0
+    }
+  ],
+  "protected_original_config_plugins_selection_unchanged": true,
+  "dms_read_calls": 0,
+  "pending": [
+    "remote GitHub publication readback",
+    "actual Desktop remote review/install",
+    "physical recipient/OS acceptance",
+    "business DMS acceptance",
+    "independent audit"
+  ],
+  "legacy_runtime_mirror": "byte-identical, regression tested"
+}

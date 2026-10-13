@@ -1,4 +1,8 @@
-# DMS Fast 0.5.2 — vào đúng từ prepare, chẩn đoán pending rõ ràng
+# DMS Fast 0.5.4 — native install và workflow DMS có giới hạn
+
+Packaging hoàn chỉnh cho native Install plugin/Review repository, không phải tuyên bố mọi chức năng DMS hoàn chỉnh. Xem NATIVE-DESKTOP-INSTALL.md. Trong task release không đọc DMS; chỉ kiểm code/package/fixtures/native Git loader.
+
+Đối với cài máy mới, START-HERE-HERMES.md + requirements.json là entry hiện hành, cùng SAFETY-AND-LIMITS và VERIFICATION.json. Không chuyển evidence live 0.5.2 sang bản mới. Installer 0.5.3 thêm guards ancestors reparse/junction và consent plan-only.
 
 Plugin và skill đọc/điều hướng DMS dựa trên **native Hermes → Chrome DevTools MCP hiện có**, không tạo kết nối hoặc browser thứ hai. Bản này KHÔNG tuyên bố đã điều khiển/nghiệm thu toàn bộ DMS. `capabilities` tách chức năng có handler và phần chưa triển khai; bản tải thực tế trên máy kiểm còn bị chặn ở inner click, không coi là PASS.
 
@@ -22,7 +26,7 @@ Plugin và skill đọc/điều hướng DMS dựa trên **native Hermes → Chr
 ## Cài tại profile của người nhận
 Yêu cầu Hermes có `PluginContext.call_mcp/get_config/register_tool/register_hook/register_skill`, `ctx.state` (`get/set` bền vững theo profile). Pane Desktop cần `host.composer.submit/insertText` và `host.state.focusedSessionId/busyBySession`; SDK thiếu thì dừng rõ ràng, không gửi sang phiên khác. Node/Chrome/MCP được setup trên chính máy người nhận theo `PORTABILITY.md`; Python plugin chỉ dùng stdlib. Chỉ Windows đã chạy phép kiểm local; chưa nghiệm thu macOS/Linux.
 
-Dùng tool `terminal` chạy `python <bundle>/install.py --home <profile-home>` với đúng profile hiện tại. Script không đoán home, không ghi đè và không enable. Tên/đường dẫn được người nhận xác định trên máy của họ; không sao chép home/config của máy phát triển.
+Dùng tool `terminal` chạy `python <bundle>/install.py --home <profile-home>` để plan với đúng profile hiện tại; chỉ --apply sau consent mới copy. Script không đoán home, không ghi đè và không enable. Tên/đường dẫn được người nhận xác định trên máy của họ; không sao chép home/config của máy phát triển.
 Không dùng Desktop: thêm `--without-panel`, chỉ cài backend và bundled skill; vẫn cần Chrome có UI trên host thực thi để người dùng đăng nhập.
 Nếu profile đã có `dms-fast` hoặc pane, installer từ chối toàn bộ trước ghi. Bản này chưa tự nâng cấp: giữ bản cũ, snapshot và thống nhất migration riêng; không dùng force/xoá bản cũ để bỏ cổng này.
 Mọi CLI tiếp theo phải chọn cùng profile qua `hermes -p <profile-name> ...` hoặc `HERMES_HOME` đúng. `--home` của installer không tự đổi scope của CLI. Sau kiểm tra/đồng ý, enable bằng `hermes plugins enable dms-fast --no-allow-tool-override` trong scope đó.
