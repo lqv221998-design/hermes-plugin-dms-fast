@@ -54,7 +54,7 @@ function Panel() {
 }
 
 export default {
-  id:'dms-fast-panel', name:'DMS Fast 0.5.1 — menu đọc và tải hai bước',
+  id:'dms-fast-panel', name:'DMS Fast 0.5.4 — native repository package',
   register(ctx) {
     ctx.register({id:'reader',area:'panes',title:'DMS Fast',data:{placement:'right',width:'310px'},render:()=>jsx(Panel,{})});
   }
