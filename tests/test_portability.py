@@ -33,7 +33,7 @@ class PortabilityTests(unittest.TestCase):
                 for directory in ('dms-fast', 'desktop-plugins/dms-fast-panel'):
                     target = home / ('plugins/dms-fast' if directory == 'dms-fast' else directory)
                     for source in (bundle / directory).rglob('*'):
-                        if source.is_file():
+                        if source.is_file() and '__pycache__' not in source.parts and source.suffix != '.pyc':
                             self.assertEqual((target / source.relative_to(bundle / directory)).read_bytes(), source.read_bytes())
             self.assertNotEqual((first / 'config.yaml').read_bytes(), (second / 'config.yaml').read_bytes())
             changed = first / 'plugins/dms-fast/core.py'
