@@ -163,3 +163,4 @@ def register(ctx):
     ctx.register_command('dms', command, description='DMS Fast read navigation', args_hint='<action> <page-id> [canonical-url]')
     ctx.register_skill('reading', Path(__file__).parent/'skills'/'reading'/'SKILL.md', description='Use when reading DMS. Verify source and coverage.')
     ctx.register_skill('setup', Path(__file__).parent/'skills'/'setup'/'SKILL.md', description='Use when setting up DMS Chrome MCP. Install with consent.')
+    ctx.register_skill('web-setup', Path(__file__).parent/'skills'/'web-setup'/'SKILL.md', description='Use when installing generic Chrome web MCP with consent.')

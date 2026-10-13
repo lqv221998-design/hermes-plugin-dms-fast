@@ -1,5 +1,7 @@
 # Hướng dẫn cho Hermes trên máy người nhận
 
+**Cài DMS + web (0.5.6):** đọc MCP-DUAL-SETUP.md, MCP-WEB-SETUP.md và dms-fast:web-setup. Deps một lần, recipe-both sinh hai entry riêng; không auto-apply hoặc thêm web vào DMS allowlist. Máy đã cài plugin bỏ bước copy/install. Không dùng web thay executor DMS/QAQC.
+
 **MCP/đã cài nhưng chưa dùng:** đọc MCP-CHROME-SETUP.md hoặc nạp dms-fast:setup (từ 0.5.5). Không chạy bootstrap trong Git/installed tree có .git/host metadata vì strict ZIP manifest reject extras; dùng ZIP sạch đã kiểm cho audit/deps/recipe. Đã cài plugin thì bỏ qua bước 4 copy/install, không overwrite/reinstall. Không tự mở tài liệu DMS trong setup.
 
 **0.5.4:** ưu tiên native Desktop Install plugin → Repository → Review repository theo NATIVE-DESKTOP-INSTALL.md. Repo-root có Agent + Desktop half + bundled skill; legacy dms-fast giữ tương thích ZIP/fragment. Không đọc tài liệu DMS trong lần release này; bước 7 chỉ thực hiện khi recipient chủ động yêu cầu sau này, không tự chạy như bước cài.

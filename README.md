@@ -1,4 +1,6 @@
-# DMS Fast 0.5.5 — Chrome MCP onboarding cho máy nhận
+# DMS Fast 0.5.6 — cài cả DMS MCP và Web MCP
+
+**Cài cả hai:** [MCP-DUAL-SETUP.md](MCP-DUAL-SETUP.md). **Web tổng quát:** [MCP-WEB-SETUP.md](MCP-WEB-SETUP.md), skill **dms-fast:web-setup**. DMS/web là hai connector riêng của cùng Google chrome-devtools-mcp@1.10.1: cài package một lần, hai Chrome profile/cache/tool policies riêng; không chuyển DMS plugin sang web để bypass guard. Helper mới `recipe-both` hoặc `recipe --mode web` chỉ sinh DATA với path recipient, không tự cài/config/trust/login. [MCP-CONNECTORS.template.json](MCP-CONNECTORS.template.json) là mẫu placeholder, không apply literal.
 
 **Đã cài plugin nhưng chưa dùng được:** nạp **dms-fast:setup**, đọc [MCP-CHROME-SETUP.md](MCP-CHROME-SETUP.md). MCP Google chính thức ở [ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp); helper tải npm **chrome-devtools-mcp@1.10.1** có consent, không vendor binary/node_modules hay profile tác giả. Native install plugin không tự cài Node/Chrome/MCP/config/allowlist. Skill setup mới được register cùng reading; runtime mới cần cập nhật/nạp đúng profile theo consent, bản cũ vẫn đọc guide và dùng helper từ ZIP sạch.
 

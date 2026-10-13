@@ -41,14 +41,18 @@ def plan_from_facts(facts):
             'host_runtime_pending':not facts.get('python_supported') or not facts.get('hermes_api'),
             'pending':['operator consent','browser/native-chat acceptance','recipient DMS login/ACL','LLM data-policy acceptance']}
 
-def connector_entry(home, facts):
+def connector_entry(home, facts, *, mode='dms'):
+    if mode not in ('dms','web'):raise ValueError('Connector mode must be dms or web')
+    profile='dms-fast-setup' if mode=='dms' else 'chrome-web-setup'
+    tools=['list_pages','new_page','take_snapshot','navigate_page','fill','press_key','click']
+    if mode=='web':tools+=['select_page','fill_form','type_text','hover','drag','upload_file','wait_for','take_screenshot','handle_dialog']
     return {'command':facts['node'],'args':[facts['mcp_bin'],
-        '--executable-path='+facts['chrome'],'--user-data-dir='+str(Path(home)/'browser-profiles/dms-fast-setup'),
+        '--executable-path='+facts['chrome'],'--user-data-dir='+str(Path(home)/'browser-profiles'/profile),
         '--no-usage-statistics','--no-performance-crux','--no-javascript-evaluation','--no-source-maps',
         '--categoryInput=true','--categoryDebugging=true','--categoryEmulation=false','--categoryPerformance=false',
-        '--categoryNetwork=false','--categoryMemory=false','--filesystem-root='+str(Path(home)/'cache/dms-fast-setup')],
+        '--categoryNetwork=false','--categoryMemory=false','--filesystem-root='+str(Path(home)/'cache'/profile)],
         'enabled':True,'trust':'untrusted','timeout':30,'connect_timeout':30,'supports_parallel_tool_calls':False,
-        'tools':{'include':['list_pages','new_page','take_snapshot','navigate_page','fill','press_key','click'],'resources':False,'prompts':False},
+        'tools':{'include':tools,'resources':False,'prompts':False},
         'sampling':{'enabled':False},'elicitation':{'enabled':False}}
 
 def command(argv,env=None,timeout=300):
@@ -134,23 +138,43 @@ def install_dependencies(home):
     if req['version'] not in observed:raise ValueError('MCP CLI version does not match pin')
     return {'status':'dependencies_installed_not_browser_verified','mcp_version':req['version'],'integrity_verified':True,'lock_sha256':hashlib.sha256(lock.read_bytes()).hexdigest(),'facts':facts,'ready_to_use':False}
 
-def configuration_recipe(home,server,facts):
+def configuration_recipe(home,server,facts, *, mode='dms'):
     if not re.fullmatch(r'[A-Za-z0-9_]{1,64}',server):raise ValueError('Use an unambiguous unused underscore-only server key')
     if any(not facts.get(n) for n in ('node','chrome','mcp_bin')):raise ValueError('Run approved deps first; cannot emit usable paths while prerequisites are missing')
+    if mode not in ('dms','web'):raise ValueError('Connector mode must be dms or web')
+    if mode=='web':
+        return {'status':'recipe_only_not_applied','home':str(home),'server_key':server,'mode':'web',
+            'connector':connector_entry(home,facts,mode='web'),
+            'create_after_consent':[str(Path(home)/'browser-profiles/chrome-web-setup'),str(Path(home)/'cache/chrome-web-setup')],
+            'gates':['explicit generic website scope','preserve existing connector and DMS/QAQC binding','private config backup','independent connector/config consent','read back exact target and unrelated config','human Chrome connection and account login'],
+            'ready_to_use':False}
     return {'status':'recipe_only_not_applied','home':str(home),'server_key':server,
         'connector':connector_entry(home,facts),'plugin_settings':{'mcp_server':server,'mcp_allowlist':[server]},
         'create_after_consent':[str(Path(home)/'browser-profiles/dms-fast-setup'),str(Path(home)/'cache/dms-fast-setup')],
         'gates':['keep existing server/plugin untouched; resolve collision before writing','private config backup','explicit connector/config/allowlist consent','explicit plugin enable consent','read back exact target and whole unrelated configuration','native chat reload/approval and own DMS login'],
         'ready_to_use':False}
 
+def dual_configuration_recipe(home,dms_server,web_server,facts):
+    if dms_server==web_server:raise ValueError('DMS and web connectors require distinct server keys')
+    dms=configuration_recipe(home,dms_server,facts)
+    web=configuration_recipe(home,web_server,facts,mode='web')
+    return {'status':'recipe_only_not_applied','home':str(home),
+        'connectors':{dms_server:dms['connector'],web_server:web['connector']},
+        'dms_plugin_settings':dms['plugin_settings'],
+        'create_after_consent':dms['create_after_consent']+web['create_after_consent'],
+        'gates':dms['gates']+web['gates'],'shared_mcp_package':facts['mcp_bin'],
+        'web_cannot_replace_dms_binding':True,'ready_to_use':False}
+
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('phase',choices=['audit','deps','install','recipe'],nargs='?',default='audit')
+    parser.add_argument('phase',choices=['audit','deps','install','recipe','recipe-both'],nargs='?',default='audit')
     parser.add_argument('--home',required=True)
     parser.add_argument('--approve-dependencies',action='store_true')
     parser.add_argument('--approve-install',action='store_true')
     parser.add_argument('--include-panel',action='store_true')
-    parser.add_argument('--server',default='chrome_dms_setup')
+    parser.add_argument('--server')
+    parser.add_argument('--mode',choices=['dms','web'],default='dms')
+    parser.add_argument('--web-server',default='chrome_web')
     args=parser.parse_args(argv)
     if args.phase=='deps' and not args.approve_dependencies:raise PermissionError('Requires --approve-dependencies after recipient consent')
     if args.phase=='install' and not args.approve_install:raise PermissionError('Requires --approve-install after recipient consent')
@@ -168,7 +192,10 @@ def main(argv=None):
     if args.phase=='deps':
         result=install_dependencies(home);print(json.dumps(result,ensure_ascii=False,indent=2));return result
     if args.phase=='recipe':
-        result=configuration_recipe(home,args.server,facts);print(json.dumps(result,ensure_ascii=False,indent=2));return result
+        server=args.server or ('chrome_dms_setup' if args.mode=='dms' else 'chrome_web')
+        result=configuration_recipe(home,server,facts,mode=args.mode);print(json.dumps(result,ensure_ascii=False,indent=2));return result
+    if args.phase=='recipe-both':
+        result=dual_configuration_recipe(home,args.server or 'chrome_dms_setup',args.web_server,facts);print(json.dumps(result,ensure_ascii=False,indent=2));return result
 
 if __name__=='__main__':
     try:main()

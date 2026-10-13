@@ -1,0 +1,109 @@
+{
+  "template_only": true,
+  "requires_recipient_path_resolution_and_consent": true,
+  "shared_package": "chrome-devtools-mcp@1.10.1",
+  "mcp_servers": {
+    "chrome_dms_setup": {
+      "command": "<RECIPIENT_NODE_EXECUTABLE>",
+      "args": [
+        "<SHARED_PINNED_MCP_ENTRYPOINT>",
+        "--executable-path=<RECIPIENT_CHROME_EXECUTABLE>",
+        "--user-data-dir=<RECIPIENT_HOME>\\browser-profiles\\dms-fast-setup",
+        "--no-usage-statistics",
+        "--no-performance-crux",
+        "--no-javascript-evaluation",
+        "--no-source-maps",
+        "--categoryInput=true",
+        "--categoryDebugging=true",
+        "--categoryEmulation=false",
+        "--categoryPerformance=false",
+        "--categoryNetwork=false",
+        "--categoryMemory=false",
+        "--filesystem-root=<RECIPIENT_HOME>\\cache\\dms-fast-setup"
+      ],
+      "enabled": true,
+      "trust": "untrusted",
+      "timeout": 30,
+      "connect_timeout": 30,
+      "supports_parallel_tool_calls": false,
+      "tools": {
+        "include": [
+          "list_pages",
+          "new_page",
+          "take_snapshot",
+          "navigate_page",
+          "fill",
+          "press_key",
+          "click"
+        ],
+        "resources": false,
+        "prompts": false
+      },
+      "sampling": {
+        "enabled": false
+      },
+      "elicitation": {
+        "enabled": false
+      }
+    },
+    "chrome_web": {
+      "command": "<RECIPIENT_NODE_EXECUTABLE>",
+      "args": [
+        "<SHARED_PINNED_MCP_ENTRYPOINT>",
+        "--executable-path=<RECIPIENT_CHROME_EXECUTABLE>",
+        "--user-data-dir=<RECIPIENT_HOME>\\browser-profiles\\chrome-web-setup",
+        "--no-usage-statistics",
+        "--no-performance-crux",
+        "--no-javascript-evaluation",
+        "--no-source-maps",
+        "--categoryInput=true",
+        "--categoryDebugging=true",
+        "--categoryEmulation=false",
+        "--categoryPerformance=false",
+        "--categoryNetwork=false",
+        "--categoryMemory=false",
+        "--filesystem-root=<RECIPIENT_HOME>\\cache\\chrome-web-setup"
+      ],
+      "enabled": true,
+      "trust": "untrusted",
+      "timeout": 30,
+      "connect_timeout": 30,
+      "supports_parallel_tool_calls": false,
+      "tools": {
+        "include": [
+          "list_pages",
+          "new_page",
+          "take_snapshot",
+          "navigate_page",
+          "fill",
+          "press_key",
+          "click",
+          "select_page",
+          "fill_form",
+          "type_text",
+          "hover",
+          "drag",
+          "upload_file",
+          "wait_for",
+          "take_screenshot",
+          "handle_dialog"
+        ],
+        "resources": false,
+        "prompts": false
+      },
+      "sampling": {
+        "enabled": false
+      },
+      "elicitation": {
+        "enabled": false
+      }
+    }
+  },
+  "dms_plugin_settings": {
+    "mcp_server": "chrome_dms_setup",
+    "mcp_allowlist": [
+      "chrome_dms_setup"
+    ]
+  },
+  "no_auto_apply": true
+}
