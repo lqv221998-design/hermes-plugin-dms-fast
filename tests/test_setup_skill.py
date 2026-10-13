@@ -3,6 +3,12 @@ import test_reader as reader
 from pathlib import Path
 
 class SetupSkillRegistration(unittest.TestCase):
+ def test_web_setup_skill_is_registered_without_browser(self):
+  ctx=reader.ReaderTests().context();reader.plugin.register(ctx)
+  skills={c.args[0]:Path(c.args[1]) for c in ctx.register_skill.call_args_list}
+  self.assertIn('web-setup',skills)
+  self.assertTrue(skills['web-setup'].is_file())
+  ctx.call_mcp.assert_not_called()
  def test_setup_guidance_is_discoverable_without_browser_or_install(self):
   ctx=reader.ReaderTests().context();reader.plugin.register(ctx)
   skills={c.args[0]:Path(c.args[1]) for c in ctx.register_skill.call_args_list}
