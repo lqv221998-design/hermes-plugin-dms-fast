@@ -1,12 +1,15 @@
 ---
 name: setup
 description: "Use when setting up DMS Chrome MCP. Install with consent."
-version: 0.5.5
+version: 0.5.6
 author: Hermes Agent
 license: MIT
 platforms: [windows, linux, macos]
 ---
 # Thiết lập Chrome DevTools MCP cho DMS Fast
+
+## Cài cả DMS và web tổng quát (từ 0.5.6)
+Đọc MCP-DUAL-SETUP.md và nạp dms-fast:web-setup. Helper `recipe-both --home <RECIPIENT_HOME> --server chrome_dms_setup --web-server chrome_web` sinh hai connector riêng dùng cùng pinned package, không tự apply. `recipe --mode web` sinh riêng web. Deps cài một lần; DMS binding/allowlist chỉ DMS, web có 16 UI tools và profile/cache khác. Generic web không có domain filter nhưng không được dùng bypass DMS/QAQC hoặc truy cập tab không được phép. Các placeholder phải resolve trước chạy, chỉ dùng ZIP sạch có manifest để chạy helper.
 
 ## Dành cho Hermes máy nhận
 Dùng khi plugin đã cài nhưng chưa dùng được, thiếu Chrome/Node/MCP, sai server binding hoặc chưa được cấp allowlist. Đây là hướng dẫn thiết lập có consent, không tự chạy lúc import/cài plugin. MCP chính thức của Google đã có tại https://github.com/ChromeDevTools/chrome-devtools-mcp ; repo DMS Fast không vendor node_modules, binary Chrome, tài khoản, cookie hoặc trust của tác giả. Gói dùng npm `chrome-devtools-mcp@1.10.1`, không thay bằng @latest trong luồng đã kiểm.
