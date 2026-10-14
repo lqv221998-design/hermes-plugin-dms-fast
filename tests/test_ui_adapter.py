@@ -130,7 +130,7 @@ class UIAdapterTests(unittest.TestCase):
             self.assertEqual(sum(c.args[1] == 'click' for c in ctx.call_mcp.call_args_list), 1)
             self.assertFalse(ctx.state.get('download_one-qaqc').get('file_transfer_attempted', False))
 
-    def test_file_continuation_requires_host_approval(self):
+    def test_legacy_file_continuation_is_blocked_before_browser(self):
         helper = sessions.SessionTests()
         ctx = helper.context()
         hooks = {}
@@ -139,7 +139,8 @@ class UIAdapterTests(unittest.TestCase):
         args = {'action': 'continue_download', 'work_id': 'one-qaqc', 'expected_file_name': 'QT-KT-07.docx'}
         result = hooks['pre_tool_call'](tool_name='dms_fast_session', args=args)
         self.assertIsNotNone(result)
-        self.assertEqual(result['action'], 'approve')
+        self.assertEqual(result['action'], 'block')
+        ctx.call_mcp.assert_not_called()
 
     def test_two_stage_download_continues_inner_link_once_and_keeps_legacy_attempt(self):
         import zipfile
