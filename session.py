@@ -11,7 +11,7 @@ from .paths import checked_path
 
 KEY = 'session_work'
 TTL = 86400
-VERSION = '0.5.6'
+VERSION = '0.6.0'
 
 
 def pages(text):
@@ -305,18 +305,18 @@ def register_session(ctx, settings, lock, reader):
 
     ctx.register_tool(
         name='dms_fast_session', toolset='dms_fast', handler=handler,
-        schema={'name': 'dms_fast_session', 'description': 'DMS entry: use prepare with the requested canonical read URL or bounded search; for site mapping use a read of https://dms.newtecons.vn/. Reuses this profile\'s visible Chrome and opens one home tab if absent. inspect only observes an existing tab; it does not bootstrap Chrome. Expired/live pending diagnostics supply the next safe step without cancellation or quota reset. Human login is normal pending. No raw browser fallback or refusal retry. Load dms-fast:reading first.',
+        schema={'name': 'dms_fast_session', 'description': 'DMS reading/search/metadata entry: prepare a canonical read URL or bounded search. For site mapping read https://dms.newtecons.vn/. inspect observes existing tabs, never bootstraps Chrome. NEW selected one-file downloads use computer_use only after completed source verification and handoff; load computer-use and the DMS reference. No new plugin download tasks. Preserve legacy attempts/quota; status/resume only reconcile an already attempted transfer. Login/quota are pending; refusal or uncertain transfer never permits retry/controller switching. Verify the local file, format and SHA256. Load dms-fast:reading first.',
                 'parameters': {'type': 'object', 'properties': {
-                    'action': {'type': 'string', 'enum': ['prepare', 'resume', 'resume_after_quota', 'cancel', 'status', 'inspect', 'capabilities', 'continue_download'], 'description': 'continue_download needs explicit permission and exact observed filename; clicks the inner file link once, never the list opener again. capabilities reports implementation limits. inspect reads UI without replacing work; optional section changes only a known read tab. status uses zero browser calls. Quota recheck always needs NEW permission.'},
+                    'action': {'type': 'string', 'enum': ['prepare', 'resume', 'cancel', 'status', 'inspect', 'capabilities'], 'description': 'capabilities reports implementation/controller limits. inspect only reads UI; status uses zero browser calls. resume preserves familiar read/search work or reconciles an already attempted legacy transfer, never starts a new legacy download. cancel requires exact-work operator approval; never clears attempts/quota or authorizes replay.'},
                     'work_id': {'type': 'string', 'pattern': '^[A-Za-z0-9_-]{1,64}$'},
-                    'expected_file_name': {'type': 'string', 'minLength': 1, 'maxLength': 300, 'description': 'continue_download only: exact filename heading observed in the live file listing; do not infer from document title.'},
+
                     'section': {'type': 'string', 'enum': list(READ_SECTIONS), 'description': 'inspect only: open a known read tab and read back the same document. Original-view metadata is not fulltext/render proof.'},
                     'menu': {'type':'string','enum':list(READ_MENUS),'description':'inspect only, no pending task: click one exact live read-menu link and read back. Booking view is not creating a reservation; guides view is not download permission. Does not click writes/logout or supply form values.'},
                     'wait_seconds': {'type': 'integer', 'minimum': 0, 'maximum': 60, 'description': 'Bounded wait; default 0 returns a resumable pending state. Use resume to wait again.'},
                     'task': {'type': 'object', 'properties': {
-                        'kind': {'type': 'string', 'enum': ['read', 'search', 'search_download_one']},
+                        'kind': {'type': 'string', 'enum': ['read', 'search']},
                         'query': {'type': 'string', 'minLength': 1, 'maxLength': 120},
-                        'output_dir': {'type': 'string', 'minLength': 1, 'maxLength': 500, 'description': 'Selected one-file download only: explicitly approved absolute existing project output directory; never overwrite.'},
+
                         'action': {'type': 'string', 'enum': ['open']},
                         'url': {'type': 'string'},
                         'expected_code': {'type': 'string', 'minLength': 1, 'maxLength': 300},

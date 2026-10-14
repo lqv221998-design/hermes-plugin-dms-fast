@@ -1,14 +1,36 @@
 {
-  "schema": "dms-native-packaging-verification-v1",
-  "version": "0.5.6",
-  "time": "2026-10-13T16:05:14.359905+07:00",
-  "scope": "recipient Chrome MCP setup guide and registered onboarding skill; no DMS executor reads",
+  "schema": "dms-cua-packaging-verification-v1",
+  "version": "0.6.0",
+  "time": "2026-10-14T10:36:17.321092+07:00",
+  "scope": "native schema/hook/pane/skill CUA handoff; no new DMS read/download for release",
   "python_tests": {
-    "passed": 108,
+    "passed": 115,
     "failed": 0,
     "skipped": 0,
     "real_npm_test": true
   },
+  "checks": [
+    {
+      "step": "full_tests_real_npm",
+      "exit_code": 0
+    },
+    {
+      "step": "panel_handoff",
+      "exit_code": 0
+    },
+    {
+      "step": "native_detector_git_probe",
+      "exit_code": 0
+    },
+    {
+      "step": "root_doctor",
+      "exit_code": 0
+    },
+    {
+      "step": "root_validate",
+      "exit_code": 0
+    }
+  ],
   "native_root_detection": {
     "agent": true,
     "desktop": true,
@@ -22,37 +44,25 @@
     "desktop": true,
     "agentName": "dms-fast"
   },
-  "checks": [
-    {
-      "step": "python_full_including_npm",
-      "exit_code": 0
+  "original_config_installed_plugins_facts_unchanged_before_requested_update": true,
+  "historical_cua_local_revalidation": {
+    "files": 28,
+    "formats": {
+      ".xlsx": 6,
+      ".docx": 20,
+      ".pdf": 2
     },
-    {
-      "step": "panel_fixture",
-      "exit_code": 0
-    },
-    {
-      "step": "actual_native_detector_git_probe",
-      "exit_code": 0
-    },
-    {
-      "step": "native_root_doctor",
-      "exit_code": 0
-    },
-    {
-      "step": "native_root_validate",
-      "exit_code": 0
-    }
-  ],
-  "protected_original_config_plugins_selection_unchanged": true,
-  "dms_read_calls": 0,
+    "all_original_copy_bytes_sha256_and_parsers_pass": true,
+    "new_downloads": 0,
+    "company_receipts_published": false
+  },
+  "dms_read_calls_for_release": 0,
+  "legacy_helpers": "preserved for reconciliation and fixture regression; model-facing new legacy transfers blocked; not an OS sandbox",
   "pending": [
-    "remote GitHub publication readback",
-    "actual Desktop remote review/install",
-    "physical recipient/OS acceptance",
-    "business DMS acceptance",
-    "independent audit",
-    "native Agent LF publish/rename WinError 5 in prior managed scratch fixtures remains undiagnosed"
-  ],
-  "legacy_runtime_mirror": "byte-identical, regression tested"
+    "remote publication/full-source/asset readback",
+    "current-session tool catalog stays frozen; fresh-session activation needed",
+    "physical recipient/macOS/Linux/cold bootstrap acceptance",
+    "fulltext/effectivity/independent security review",
+    "native Agent LF publish/rename WinError 5 previously observed; not diagnosed here"
+  ]
 }

@@ -1,4 +1,10 @@
-# DMS Fast 0.5.6 — cài cả DMS MCP và Web MCP
+# DMS Fast 0.6.0 — đọc DevTools, tải một tệp bằng Computer Use
+
+**Luồng tải mới:** [CUA-DOWNLOAD-WORKFLOW.md](CUA-DOWNLOAD-WORKFLOW.md). DMS Fast dùng `dms_fast_session` để tìm/đọc/kiểm nguồn; Agent dùng công cụ host `computer_use` cho một tệp được chọn sau fresh read completed. Pane có trường filename/output_dir và nút gửi yêu cầu một lần, không là downloader ẩn hoặc tác vụ nền. Xác minh file/format/SHA256/copy/receipt local độc lập; không giả receipt CUA vào plugin state. Code/schema/hook và bundled skill đã đồng bộ, không chỉ đổi hướng dẫn.
+
+Model-facing schema bỏ tạo download task/inner continuation/quota reset. Hook chặn lời gọi cũ kể cả qua `tool_call`; giữ helpers/state/fixtures lịch sử để đối soát, không tự migration hoặc replay. Mã hiệu/Số hiệu đối chiếu literal cả khi hai trường khác nhau, bao gồm kiểm lại file đã bàn giao. `status` zero-browser, legacy `resume` chỉ cho attempt đã lưu; cancel cần duyệt đúng work. Không đổi MCP/config/allowlist/trust/Chrome.
+
+Pre-release: chưa nghiệm thu máy vật lý thứ hai/macOS/Linux. Có kiểm byte/hash các tệp CUA đã tải trước đây, không tải thêm DMS để thử release và không đưa tài liệu/receipt/tài khoản công ty vào repo. Những mô tả 0.5.x bên dưới là lịch sử đóng gói; workflow tải 0.6.0 và bundled reading skill mới có ưu tiên.
 
 **Cài cả hai:** [MCP-DUAL-SETUP.md](MCP-DUAL-SETUP.md). **Web tổng quát:** [MCP-WEB-SETUP.md](MCP-WEB-SETUP.md), skill **dms-fast:web-setup**. DMS/web là hai connector riêng của cùng Google chrome-devtools-mcp@1.10.1: cài package một lần, hai Chrome profile/cache/tool policies riêng; không chuyển DMS plugin sang web để bypass guard. Helper mới `recipe-both` hoặc `recipe --mode web` chỉ sinh DATA với path recipient, không tự cài/config/trust/login. [MCP-CONNECTORS.template.json](MCP-CONNECTORS.template.json) là mẫu placeholder, không apply literal.
 

@@ -1,6 +1,6 @@
 name: dms-fast
-version: 0.5.6
-description: DMS semantic UI adapter, capability discovery and verified two-stage downloads.
+version: 0.6.0
+description: DMS semantic reader with selected-file Computer Use handoff and independent local verification.
 author: vu.lequang, Hermes Agent
 license: MIT
 provides_tools:

@@ -7,7 +7,11 @@ from .core import BASE, DOC_PATTERN, ROUTES
 CAPABILITIES = {
     'adapter': 'newtecons-semantic-ui',
     'supported': ['inspect', 'read_menu', 'search', 'navigate_read_route', 'metadata', 'info', 'original',
-                  'download_one', 'continue_download', 'status', 'cancel', 'human_login', 'quota_pending'],
+                  'status', 'cancel_with_operator_approval', 'human_login', 'quota_pending'],
+    'download_controller': 'computer_use',
+    'download_handoff': 'completed_source_read_then_selected_one_file; independent_local_format_sha256_receipt',
+    'plugin_new_downloads_enabled': False,
+    'legacy_download_state': 'preserved; status/resume reconciliation only after a persisted attempt',
     'gated_not_implemented': ['upload', 'edit', 'delete', 'sign', 'approve', 'send',
                               'meeting_booking', 'vehicle_booking', 'advanced_filter', 'pagination', 'fulltext_ocr'],
     'all_dms_functions_verified': False,

@@ -1,7 +1,7 @@
 {
   "schema": "hermes-dms-recipient-setup-v1",
-  "bundle_version": "0.5.6",
-  "plugin_version": "0.5.6",
+  "bundle_version": "0.6.0",
+  "plugin_version": "0.6.0",
   "status": "pilot-not-second-machine-certified",
   "python_runtime": {"supported": "3.14.x", "observed": "3.14.7", "owner": "Hermes installation launcher / PM; never raw pip/uv into its runtime"},
   "hermes": {"minimum_numeric_version": null, "required_plugin_context_methods": ["call_mcp", "get_config", "register_tool", "register_hook", "register_command", "register_skill"], "required_cli": ["plugins doctor", "plugins enable", "config set", "config get"], "required_python_imports": ["hermes_cli.plugins", "mcp", "pm"], "note": "Capability check + Doctor, not an invented version threshold"},
