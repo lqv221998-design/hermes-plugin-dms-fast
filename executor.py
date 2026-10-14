@@ -56,7 +56,8 @@ def execute(ctx, task, page_id, text, call, work_id):
             call('navigate_page', {'pageId': page_id, 'type': 'url', 'url': task['url'], 'timeout': 10000, 'handleBeforeUnload': 'dismiss'})
             live = checked(call('take_snapshot', {'pageId': page_id}))
         current_source = {'url': live['url'], 'title': task['expected_title'] if task['expected_title'] in live['headings'] else None,
-                          'code': live['metadata'].get('Số hiệu'), 'revision': live['metadata'].get('Lần ban hành'),
+                          'code': task['expected_code'] if task['expected_code'] in (live['metadata'].get('Số hiệu'), live['metadata'].get('Mã hiệu')) else None,
+                          'revision': live['metadata'].get('Lần ban hành'),
                           'effective_date': live['metadata'].get('Ngày hiệu lực')}
         if current_source != saved['source']:
             return {'status': 'source_revision_changed', 'download_attempted': False, 'instruction': 'Live source differs from the delivered revision; preserve the previous file and seek a new scoped selection.'}
@@ -84,7 +85,7 @@ def execute(ctx, task, page_id, text, call, work_id):
             call('navigate_page', {'pageId': page_id, 'type': 'url', 'url': task['url'], 'timeout': 10000, 'handleBeforeUnload': 'dismiss'})
             detail = call('take_snapshot', {'pageId': page_id})
         page = checked(detail)
-        if page['url'] != task['url'] or task['expected_title'] not in page['headings'] or page['metadata'].get('Số hiệu') != task['expected_code']:
+        if page['url'] != task['url'] or task['expected_title'] not in page['headings'] or task['expected_code'] not in (page['metadata'].get('Số hiệu'), page['metadata'].get('Mã hiệu')):
             return {'status': 'source_mismatch', 'download_attempted': False}
         source = {'url': page['url'], 'title': task['expected_title'], 'code': task['expected_code'],
                   'revision': page['metadata'].get('Lần ban hành'), 'effective_date': page['metadata'].get('Ngày hiệu lực')}

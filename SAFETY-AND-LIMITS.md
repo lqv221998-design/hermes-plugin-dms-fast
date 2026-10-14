@@ -1,4 +1,6 @@
-# Phạm vi bảo mật và hỗ trợ — 0.5.4
+# Phạm vi bảo mật và hỗ trợ — 0.6.0
+
+Luồng tải 0.6.0: đọc nguồn bằng executor DevTools, handoff một tệp cho host computer_use sau read completed; không là fallback vượt refusal. Không có native API tải ẩn/auto-foreground/quota reset. Model-facing schema/hook/pane/skill đồng bộ; giữ legacy helpers cho đối soát và regression, không tự thay state. CUA receipt local độc lập, không nạp Cognee hoặc đưa source/account/history vào release. Các bằng chứng 0.5.x bên dưới giữ như lịch sử, không là nghiệm thu recipient 0.6.0.
 
 Repo public theo chấp thuận của tác giả, chỉ code/docs/tests, không source data/cookies/config. Native root + legacy mirror dùng cùng reviewed runtime; không ghi đè ZIP 0.5.3 hoặc tự thay bản installed. Gói install/probe không tự đọc tài liệu DMS. Đây là bản hoàn chỉnh về native packaging, không chứng nhận đầy đủ nghiệp vụ, security hoặc mọi OS.
 

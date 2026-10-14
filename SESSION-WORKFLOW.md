@@ -1,4 +1,6 @@
-# Luồng Chrome → người dùng đăng nhập → tiếp tục nhiệm vụ
+# Luồng 0.6.0: Chrome → đăng nhập → đọc nguồn → CUA transfer
+
+Tải mới theo [CUA-DOWNLOAD-WORKFLOW.md](CUA-DOWNLOAD-WORKFLOW.md), không qua legacy executor. Schema model-facing chỉ nhận task `read`/`search`; hook chặn prepare legacy, continue_download và resume_after_quota, không xóa lịch sử. Helpers cũ được giữ cho fixture/regression và đối soát attempt đã có, không là quyền thực thi ngoài workflow. Hook không phải OS sandbox.
 
 ## Cơ chế đã xây
 `dms_fast_session` là cửa vào trước các thao tác DMS. Handler dùng public `PluginContext.call_mcp` của Hermes; không thêm browser framework/client hoặc dò API.
@@ -8,7 +10,7 @@
 3. Có tab SSO: không snapshot/form-fill trang SSO, không đọc credentials; trả `ok=true,status=awaiting_login`. Đây là trạng thái bình thường, không phải task thất bại. Có thể chờ tối đa 60 giây mỗi call bằng list-pages polling; hết thời gian vẫn giữ task. Không loop nền vô hạn.
 4. Người dùng đăng nhập trực tiếp trong Chrome. **resume** dùng lại work ID, liệt kê lại tab; không dùng page ID/UID cũ.
 5. DMS canonical + snapshot có tiêu đề, **link Đăng xuất đúng logout route** và không denial: đủ điều kiện chạy executor, không trả `ready` để model bỏ qua workflow. Đây là heuristic UI, không xác minh danh tính/backend ACL.
-6. Task `read/open` gọi reader nội bộ và chỉ xoá pending sau thành công. Query-only `search_download_one` chạy search UI → trả candidates, chưa tải. Cancel task tìm kiếm rồi prepare selected task có exact URL/title/code/output_dir. Executor kiểm revision/hiệu lực; reuse file đã kiểm cùng server/source/output hoặc chỉ một click đã duyệt → kiểm tệp/hash/copy/receipt. Chỉ file đã kiểm mới `completed`, vẫn chờ người dùng nghiệm thu.
+6. Task `read/open` gọi reader nội bộ và chỉ xoá pending sau thành công. `search` trả candidates, kết thúc sau kết quả đã đọc; chọn đúng nguồn rồi read/open. Tải mới cần quyền một tệp, exact filename/output, metadata/revision và handoff completed. Agent dùng computer_use trên Chrome hiện có; ledger trước click và receipt local riêng, không ghi completed giả vào plugin. Legacy resume chỉ đối soát attempt đã lưu, không bắt đầu transfer mới.
 7. Hết phiên: quay về chờ đăng nhập, giữ task. **cancel** xoá task nhưng không đóng browser, không logout hoặc sửa DMS.
 
 ## Nhớ gì và không nhớ gì
@@ -27,7 +29,7 @@
 - Hai controllers ngoài plugin vẫn có thể đụng nhau: agent phải giữ thao tác tuần tự.
 
 ## Quota và môi trường recipient
-- UI báo 5 văn bản/ngày → `awaiting_quota`, remaining/reset unknown; giữ login/source/revision/pending. Resume thường không click lại. `resume_after_quota` chỉ sau phê duyệt mới qua host hook; không tự hẹn reset hoặc chuyển tài khoản.
+- UI báo 5 văn bản/ngày → `awaiting_quota`, remaining/reset unknown; giữ login/source/revision/pending. Resume thường không click lại. Model-facing 0.6.0 chặn resume_after_quota; không reset latch/attempt, tự hẹn reset, relogin hoặc chuyển tài khoản.
 - Operator cấu hình đúng MCP alias và absolute existing download_dir trên host chạy Python. Thiếu directory → configuration_required trước browser call; không đoán Downloads trên từng OS. Selected output_dir phải được duyệt rõ ràng, không overwrite.
 - Hỗ trợ page-list title+URL và URL-only; unknown format/ambiguous tabs/schema/denial thì dừng. Tên server không bắt buộc chrome_dms. Máy chạy browser remote/WSL/container nhưng không chung filesystem chưa được hỗ trợ nhận download; xem PORTABILITY.md.
 

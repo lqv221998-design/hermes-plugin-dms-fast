@@ -118,10 +118,25 @@ def register(ctx):
         # The host sanitizes exposed tool names; call_mcp still uses the exact server key.
         prefix = 'mcp__' + re.sub(r'[^A-Za-z0-9_]', '_', settings(ctx)['mcp_server']) + '__'
         nested = args.get('calls', []) if isinstance(args, dict) else []
-        if name == 'dms_fast_session' and isinstance(args, dict) and args.get('action') == 'continue_download':
-            return {'action': 'approve', 'message': 'Authorize one selected inner DMS file download; may use the daily quota. Never repeats the list opener or retries an uncertain transfer.', 'rule_key': 'dms-file-continuation-' + str(args.get('work_id', ''))}
-        if name == 'dms_fast_session' and isinstance(args, dict) and args.get('action') == 'resume_after_quota':
-            return {'action': 'approve', 'message': 'DMS previously reported the daily download quota. Authorize ONE new UI attempt now, without assuming the quota reset?', 'rule_key': 'dms-quota-recheck'}
+        session_calls = ([args] if name == 'dms_fast_session' else []) + [
+            item.get('arguments', {}) for item in nested
+            if isinstance(item, dict) and item.get('name') == 'dms_fast_session'
+        ] if isinstance(nested, list) else ([args] if name == 'dms_fast_session' else [])
+        for payload in session_calls:
+            if not isinstance(payload, dict):
+                continue
+            action = payload.get('action')
+            task = payload.get('task')
+            if (action == 'prepare' and isinstance(task, dict) and task.get('kind') == 'search_download_one') or action in ('continue_download', 'resume_after_quota'):
+                return {'action': 'block', 'message': 'New plugin downloads and quota resets are disabled. Use dms_fast_session for a completed source read, then the selected one-file computer_use handoff. Preserve legacy attempts/quota; status/resume only reconcile an already attempted transfer.'}
+            if action == 'resume':
+                saved = ctx.state.get('session_work')
+                if isinstance(saved, dict) and isinstance(saved.get('task'), dict) and saved['task'].get('kind') == 'search_download_one':
+                    attempt = ctx.state.get('download_' + str(payload.get('work_id', '')))
+                    if not isinstance(attempt, dict) or not attempt.get('attempted'):
+                        return {'action': 'block', 'message': 'Legacy work has no persisted attempt. Do not resume it into a new download or switch controller; preserve state and seek an explicit operator decision.'}
+            if action == 'cancel':
+                return {'action': 'approve', 'message': 'Cancel only this exact familiar work after explicit operator approval; keep attempts, quota and uncertain delivery history. Never use cancellation to replay its source.', 'rule_key': 'dms-cancel-' + str(payload.get('work_id', ''))}
         if name == 'dms_fast_read' or name.startswith(prefix) or any(
                 isinstance(item, dict) and str(item.get('name', '')).startswith(prefix)
                 for item in nested if isinstance(nested, list)):
@@ -129,7 +144,7 @@ def register(ctx):
         return None
 
     ctx.register_hook('pre_tool_call', guard)
-    ctx.register_hook('pre_llm_call', lambda **kw: {'context': 'For missing DMS dependencies or Chrome MCP configuration, load dms-fast:setup first; plugin installation does not configure MCP or grant browser permission. For DMS website work, load dms-fast:reading and use only dms_fast_session. Start with prepare for the requested canonical read URL or bounded search; site mapping starts with a read of https://dms.newtecons.vn/. inspect observes existing tabs and does not bootstrap Chrome. Follow expired/live pending guidance; never cancel unfamiliar work or reset attempts/quota. Direct dms_fast_read and the configured Chrome MCP server are reserved. Human login and daily quota are normal pending states. Never infer completion from a click.'})
+    ctx.register_hook('pre_llm_call', lambda **kw: {'context': 'For missing DMS dependencies or Chrome MCP configuration, load dms-fast:setup first; plugin installation does not configure MCP or grant browser permission. Load dms-fast:reading. For DMS reading/search/metadata, use only dms_fast_session. Start with prepare for the requested canonical read URL or bounded search; site mapping starts with a read of https://dms.newtecons.vn/. inspect observes existing tabs and does not bootstrap Chrome. NEW explicitly selected one-file downloads use computer_use after completed source verification and handoff; load computer-use and the DMS download reference first. Do not create new plugin download tasks. Follow expired/live pending guidance; never cancel unfamiliar work or reset attempts/quota. Never replay an uncertain download or switch controller after transport/approval/access refusal. Direct dms_fast_read and the configured Chrome MCP server remain reserved. Human login and daily quota are normal pending states. Verify the completed local file, format and SHA256; never infer completion from a click.'})
 
     def handler(args, **kwargs):
         return json.dumps({'ok': False, 'status': 'session_required', 'instruction': 'Use dms_fast_session with a bounded task; the reader is internal only.'}, ensure_ascii=False)
